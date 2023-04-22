@@ -8,6 +8,7 @@ public interface ILibroService {
 
     public ResponseEntity<LibroResponseRest> buscarLibros();
     public ResponseEntity<LibroResponseRest> buscarLibroById(int id);
+    //public ResponseEntity<LibroResponseRest> buscarLibroByName(String nombre);
     public ResponseEntity<LibroResponseRest> guardarLibro(Libro libro);
     public ResponseEntity<LibroResponseRest> actualizarLibro(int id,Libro libro);
     public ResponseEntity<LibroResponseRest> eliminarLibro(int id);

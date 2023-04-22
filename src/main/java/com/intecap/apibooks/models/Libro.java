@@ -1,5 +1,6 @@
 package com.intecap.apibooks.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,8 @@ public class Libro implements Serializable {
     private int id;
     private String nombre;
     private String descripcion;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)          //Carga lenta, cuando la necesita.
     @JoinColumn(name = "categoria_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Categoria categoria;
 }

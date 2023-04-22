@@ -2,7 +2,6 @@ package com.intecap.apibooks.services;
 
 import com.intecap.apibooks.models.Libro;
 import com.intecap.apibooks.models.dao.ILibroDao;
-import com.intecap.apibooks.response.CategoriaResponseRest;
 import com.intecap.apibooks.response.LibroResponseRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +41,7 @@ public class LibroService implements ILibroService{
     @Override
     @Transactional(readOnly = true)
     public ResponseEntity<LibroResponseRest> buscarLibroById(int id) {
-        log.info("Listando los libros.");
+        log.info("Buscando libro por id.");
         LibroResponseRest response = new LibroResponseRest();
         List<Libro> list = new ArrayList<>();
         try{
@@ -52,17 +51,46 @@ public class LibroService implements ILibroService{
                 response.getLibroResponse().setLibros(list);
                 response.setMetadata("Respuesta Ok", "200", "Libro encontrado");
             }else{
+                log.severe("No se encontro el libro con el id: "+id);
                 response.setMetadata("Respuesta Null", "-1", "Libro no encontrado");
                 return new ResponseEntity<LibroResponseRest>(response, HttpStatus.NOT_FOUND);
             }
         }catch (Exception e){
-            log.info("Error al consultar los libros."+e.getMessage());
+            log.info("Error al consultar el libro."+e.getMessage());
             e.getStackTrace();
             response.setMetadata("Respuesta Mala.","-1","Respuesta incorrecta.");
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<LibroResponseRest>(response, HttpStatus.OK);
     }
+
+    /*
+    @Override
+    @Transactional(readOnly = true)
+    public ResponseEntity<LibroResponseRest> buscarLibroByName(String nombre) {
+        log.info("Buscando libro por nombre.");
+        LibroResponseRest response = new LibroResponseRest();
+        List<Libro> list = new ArrayList<>();
+        try{
+            Optional<Libro> libro = libroDao.findByName(nombre);
+            if(libro.isPresent()){
+                list.add(libro.get());
+                response.getLibroResponse().setLibros(list);
+                response.setMetadata("Respuesta Ok", "200", "Libro encontrado");
+            }else{
+                log.severe("No se encontro el libro con el nombre: "+nombre);
+                response.setMetadata("Respuesta Null", "-1", "Libro no encontrado");
+                return new ResponseEntity<LibroResponseRest>(response, HttpStatus.NOT_FOUND);
+            }
+        }catch (Exception e){
+            log.severe("Error al consultar el libro."+e.getMessage());
+            e.getStackTrace();
+            response.setMetadata("Respuesta Mala.","-1","Respuesta incorrecta.");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<LibroResponseRest>(response, HttpStatus.OK);
+    }
+    */
 
     @Override
     @Transactional
